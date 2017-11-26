@@ -2,7 +2,7 @@ import { parallel } from 'async'
 import lodash from 'lodash'
 import config from '../../config'
 import { format } from '../../utils'
-import { Customer } from '../../models'
+import { Customer, Checkin } from '../../models'
 
 /**
  * Get list customers
@@ -63,8 +63,54 @@ const info = (data, callback) => {
   })
 }
 
+/**
+ * Customer checked in
+ *
+ * @param {Object} checkin
+ */
+const newCheckin = (checkin) => {
+  Checkin.aggregate([
+    { $match: { event: checkin.event, customer: checkin.customer } },
+    { $group: { _id: '$event', total: { $sum: 1 } } }
+  ], (error, data) => {
+    let totalEvent = 0
+    if (data && data[0]) {
+      totalEvent = data[0].total
+    }
+
+    updateStatistic(checkin.customer, ['checkin', 'event'], [1, totalEvent])
+  })
+}
+
+/**
+ * Update customer statistic by keys/values
+ *
+ * @param {ObjectId}  customerId
+ * @param {Array}     keys
+ * @param {Array}     values
+ */
+const updateStatistic = (customerId, keys, values) => {
+  if (!keys || !keys.length || !values || !values.length || keys.length !== values.length) {
+    return
+  }
+
+  const statisticCondition = {}
+  keys.map((key, index) => {
+    statisticCondition[`statistic.${key}`] = values[index]
+    return 1
+  })
+
+  Customer.update({
+    _id: customerId
+  }, {
+    $inc: statisticCondition
+  }).exec()
+}
+
 // Export
 export default {
   all,
-  info
+  info,
+  newCheckin,
+  updateStatistic
 }

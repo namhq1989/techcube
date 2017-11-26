@@ -31,8 +31,6 @@ function checkUniqueEmail(email, callback) {
  */
 function checkUniquePhone(phone, callback) {
   phone = format.phone(phone)
-
-  console.log('phone', phone)
   // Find in db
   User.count({
     phone

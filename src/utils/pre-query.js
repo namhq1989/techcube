@@ -7,7 +7,7 @@ import format from './format'
 import helper from './helper'
 import { ObjectId } from './mongoose'
 import locales from '../locales'
-import { Customer, User } from '../models'
+import { Customer, User, Event } from '../models'
 
 function query(req, res, next, id, Model, message) {
   // Validate id first
@@ -56,9 +56,14 @@ const customer = (req, res, next, id) => {
   query(req, res, next, id, Customer, locales.NotFound.Customer)
 }
 
+const event = (req, res, next, id) => {
+  query(req, res, next, id, Event, locales.NotFound.Event)
+}
+
 // Export
 export default {
   uploadExcel,
   user,
-  customer
+  customer,
+  event
 }

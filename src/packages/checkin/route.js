@@ -4,9 +4,7 @@
  */
 
 import express from 'express'
-// import UserCtrl from './controller'
-import { response } from '../../utils'
-import { ObjectId } from '../../utils/mongoose'
+import CheckinCtrl from './controller'
 
 const router = express.Router()
 
@@ -21,43 +19,12 @@ const router = express.Router()
  * @apiGroup Checkin
  * @apiName Checkin
  * @apiVersion 1.0.0
+ *
+ * @apiParam {String}   code
+ * @apiParam {Number}   latitude
+ * @apiParam {Number}   longitude
+ * @apiParam {String}   deviceInfo
  */
-router.post('/', (req, res) => {
-  res.jsonp(response(true, {
-    event: {
-      _id: new ObjectId(),
-      name: 'Current event'
-    },
-    histories: [{
-      _id: new ObjectId(),
-      date: '2017-11-25T17:48:03.629Z',
-      event: {
-        _id: new ObjectId(),
-        name: 'Sample event'
-      }
-    }, {
-      _id: new ObjectId(),
-      date: '2017-11-25T17:48:03.629Z',
-      event: {
-        _id: new ObjectId(),
-        name: 'Sample event'
-      }
-    }, {
-      _id: new ObjectId(),
-      date: '2017-11-25T17:48:03.629Z',
-      event: {
-        _id: new ObjectId(),
-        name: 'Sample event'
-      }
-    }, {
-      _id: new ObjectId(),
-      date: '2017-11-25T17:48:03.629Z',
-      event: {
-        _id: new ObjectId(),
-        name: 'Sample event'
-      }
-    }]
-  }))
-})
+router.post('/', CheckinCtrl.checkin)
 
 export default router

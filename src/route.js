@@ -15,6 +15,7 @@ export default function () {
   api.use('/users', require('./packages/users/route').default)
   api.use('/customers', require('./packages/customers/route').default)
   api.use('/checkin', require('./packages/checkin/route').default)
+  api.use('/events', require('./packages/events/route').default)
 
   return api
 }

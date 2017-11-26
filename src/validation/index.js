@@ -6,6 +6,7 @@ import validate from 'express-validation'
 
 // Validate components
 import customer from './customer'
+import event from './event'
 
 
 // Apply validate function to object
@@ -19,5 +20,6 @@ const parse = (object) => {
 
 // Export
 export default {
-  customer: parse(customer)
+  customer: parse(customer),
+  event: parse(event)
 }

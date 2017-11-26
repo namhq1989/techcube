@@ -51,9 +51,53 @@ const getFileType = (filename) => {
   }
 }
 
+/**
+ * Get device information
+ *
+ * @param  {String} ua
+ * @return {Object}
+ */
+const getDeviceInfo = (ua) => {
+  const info = {
+    isMobile: false
+  }
+
+  if (!ua) {
+    return info
+  }
+
+  /* eslint prefer-destructuring: 0 */
+  /* eslint no-useless-escape: 0 */
+  try {
+    if (/like Mac OS X/.test(ua)) {
+      info.version = /CPU( iPhone)? OS ([0-9\._]+) like Mac OS X/.exec(ua)[2].replace(/_/g, '.')
+      info.os = config.deviceOS.ios
+      info.isMobile = true
+    } else if (/Android/.test(ua)) {
+      info.version = /Android ([0-9.]+)[);]/.exec(ua)[1]
+      info.os = config.deviceOS.android
+      info.isMobile = true
+    } else if (/webOS\//.test(ua)) {
+      info.version = /webOS\/([0-9\.]+)[\);]/.exec(ua)[1]
+      info.os = config.deviceOS.web
+    } else if (/(Intel|PPC) Mac OS X/.test(ua)) {
+      info.version = /(Intel|PPC) Mac OS X ?([0-9\._]*)[\)\;]/.exec(ua)[2].replace(/_/g, '.') || true
+      info.os = config.deviceOS.mac
+    } else if (/Windows NT/.test(ua)) {
+      info.version = /Windows NT ([0-9\._]+)[\);]/.exec(ua)[1]
+      info.os = config.deviceOS.windows
+    }
+
+    return info
+  } catch (error) {
+    return info
+  }
+}
+
 // Export
 export default {
   token,
   customerQRCode,
-  getFileType
+  getFileType,
+  getDeviceInfo
 }

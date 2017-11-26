@@ -40,11 +40,10 @@ const CustomerSchema = new Schema({
       type: Number,
       default: 0
     },
-    events: {
+    event: {
       type: Number,
       default: 0
-    },
-    lastCheckinAt: Date
+    }
   },
   createdAt: {
     type: Date,
@@ -74,6 +73,8 @@ CustomerSchema.pre('save', function (next) {
     this._isNew = true
     this.qrCode = helper.customerQRCode(this)
   }
+
+  this.updatedAt = new Date()
 
   // Set search string
   this.searchString = removeDiacritics(this.name).toLowerCase()

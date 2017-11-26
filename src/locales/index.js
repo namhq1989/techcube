@@ -25,7 +25,8 @@ export default {
     User: notFoundText('Tài khoản'),
     Customer: notFoundText('Khách hàng'),
     File: notFoundText('File'),
-    MailTemplate: notFoundText('Mail template')
+    MailTemplate: notFoundText('Mail template'),
+    Event: notFoundText('Sự kiện')
   },
 
   // Validation message
@@ -43,6 +44,14 @@ export default {
       NameMaxLength: `Tên không được quá ${config.user.validate.nameMaxLength} ký tự`,
       EmailExisted: 'Email này đã tồn tại trong hệ thống',
       PhoneExisted: 'Số điện thoại này đã tồn tại trong hệ thống'
+    },
+    Event: {
+      NameRequired: 'Tên không được trống',
+      NameMinLength: `Tên không được ít hơn ${config.event.validate.nameMinLength} ký tự`,
+      NameMaxLength: `Tên không được quá ${config.event.validate.nameMaxLength} ký tự`,
+      StartAtRequired: 'Thời gian bắt đầu sự kiện không được trống',
+      EndAtRequired: 'Thời gian kết thúc sự kiện không được trống',
+      NoActiveEvent: 'Không tìm thấy sự kiện nào đang diễn ra trong thời gian này'
     }
   },
 

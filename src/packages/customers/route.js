@@ -27,7 +27,7 @@ const router = express.Router()
  * @apiName All
  * @apiVersion 1.0.0
  *
- * @apiParam {String}                             page=0
+ * @apiParam {Number}                             page=0
  * @apiParam {String}                             keyword
  * @apiParam {String="createdAt","-createdAt"}    sort=-createdAt
  */
@@ -45,7 +45,6 @@ router.get('/:customerId', middleware.requiresAdmin, CustomerCtrl.show)
 
 /**
  * @api {post} /customers Create new customer
- * @apiUse CustomerAPI
  *
  * @apiGroup Customer
  * @apiName Create
@@ -90,6 +89,19 @@ router.put('/:customerId', validation.customer.update, middleware.requiresAdmin,
  * @apiParam {File}   file
  */
 router.post('/customersByExcel', upload.single('file'), preQuery.uploadExcel, middleware.requiresAdmin, CustomerCtrl.createByExcel)
+
+/**
+ * @api {get} /customers/:customerId/checkin Checkin histories
+ * @apiUse CustomerAPI
+ *
+ * @apiGroup Customer
+ * @apiName CheckinHistories
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {Number}                             page=0
+ * @apiParam {String="createdAt","-createdAt"}    sort=-createdAt
+ */
+router.post('/:customerId/checkin', middleware.requiresAdmin, CustomerCtrl.checkinHistories)
 
 /* Pre-query */
 router.param('customerId', preQuery.customer)

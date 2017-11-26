@@ -30,6 +30,12 @@ export default {
   limit: {
     customers: {
       all: 20
+    },
+    events: {
+      all: 10
+    },
+    checkin: {
+      all: 20
     }
   },
 
@@ -78,6 +84,14 @@ export default {
     validate: {
       nameMinLength: 3,
       nameMaxLength: 32
+    }
+  },
+
+  // Event
+  event: {
+    validate: {
+      nameMinLength: 3,
+      nameMaxLength: 999
     }
   }
 }

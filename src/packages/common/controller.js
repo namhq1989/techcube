@@ -1,7 +1,7 @@
-import { series } from 'async'
+import { series, parallel } from 'async'
 import locales from '../../locales'
 import { response, getError, env, helper } from '../../utils'
-import { User } from '../../models'
+import { User, Customer, Event } from '../../models'
 
 /**
  * Login with email
@@ -60,7 +60,31 @@ const login = (req, res) => {
   })
 }
 
+/**
+ * Get page dashboard data
+ *
+ */
+const dashboard = (req, res) => {
+  parallel({
+    totalCustomers: (cb) => {
+      Customer.count((error, c) => cb(null, c))
+    },
+    totalEvents: (cb) => {
+      Event.count((error, c) => cb(null, c))
+    },
+    recentCustomer: (cb) => {
+      Customer.findOne().sort('-createdAt').lean().exec((error, customer) => cb(null, customer))
+    },
+    recentEvent: (cb) => {
+      Event.findOne().sort('-createdAt').lean().exec((error, event) => cb(null, event))
+    }
+  }, (error, results) => {
+    res.jsonp(response(true, results))
+  })
+}
+
 // Export
 export default {
-  login
+  login,
+  dashboard
 }

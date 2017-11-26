@@ -1,7 +1,7 @@
 import { eachSeries } from 'async'
 import { response, getError } from '../../utils'
 import locales from '../../locales'
-import { Customer } from '../../models'
+import { Customer, Checkin } from '../../models'
 
 /**
  * Get list customers
@@ -59,7 +59,7 @@ const update = (req, res) => {
 }
 
 /**
- * Update customer
+ * Create by excel file
  *
  */
 const createByExcel = (req, res) => {
@@ -81,11 +81,26 @@ const createByExcel = (req, res) => {
   })
 }
 
+/**
+ * Checkin histories
+ *
+ */
+const checkinHistories = (req, res) => {
+  // Fetch params
+  const { page, sort } = req.query
+  const customerId = req.customerData._id
+
+  Checkin.allByCustomer(customerId, page, sort, (data) => {
+    res.jsonp(response(true, data))
+  })
+}
+
 // Export
 export default {
   all,
   show,
   create,
   update,
-  createByExcel
+  createByExcel,
+  checkinHistories
 }
