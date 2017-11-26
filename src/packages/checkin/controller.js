@@ -80,7 +80,7 @@ const checkin = (req, res) => {
     }
 
     if (error) {
-      const message = !customer ? locales.NotFound.User : locales.Event.NoActiveEvent
+      const message = !customer ? locales.NotFound.User : locales.Validation.Event.NoActiveEvent
       res.jsonp(response(false, {
         customer,
         histories: results.histories || config.conventions.array
