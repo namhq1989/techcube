@@ -59,7 +59,7 @@ router.get('/:customerId', middleware.requiresAdmin, CustomerCtrl.show)
  * @apiParam {String}   email
  * @apiParam {String}   note
  */
-router.post('/', validation.customer.create, middleware.requiresAdmin, CustomerCtrl.create)
+router.post('/', validation.customer.create, CustomerCtrl.create)
 
 /**
  * @api {put} /customers/:customerId Update customer
