@@ -12,11 +12,10 @@ const router = express.Router()
 
 /**
  * @apiDefine CheckinAPI
- * @apiHeader {String} Authorization User Access token
  */
 
 /**
- * @api {post} /checkins
+ * @api {post} /checkins Checkin
  * @apiUse CheckinAPI
  *
  * @apiGroup Checkin
