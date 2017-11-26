@@ -1,6 +1,6 @@
 /**
  * Checkin routes
- * Prefix: /checkins
+ * Prefix: /checkin
  */
 
 import express from 'express'
@@ -15,7 +15,7 @@ const router = express.Router()
  */
 
 /**
- * @api {post} /checkins Checkin
+ * @api {post} /checkin Checkin
  * @apiUse CheckinAPI
  *
  * @apiGroup Checkin
