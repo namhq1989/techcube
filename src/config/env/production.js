@@ -16,6 +16,9 @@ export default {
   // Port
   port: 3000,
 
+  // Secret for token
+  secret: 'du_Aw#AD{aC}tDF!h9=7Rg',
+
   // Mailer
   mailer: {
     from: 'Techcube <support@techcube.com>',

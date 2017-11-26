@@ -35,11 +35,10 @@ app.use(cors())
 app.use(compress())
 app.use(methodOverride())
 app.use(helmet())
-
-app.use(bodyParser.json({
-  limit: '100kb'
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: true
 }))
-
 app.use(xmlparser({
   trim: true,
   normalizeTags: false

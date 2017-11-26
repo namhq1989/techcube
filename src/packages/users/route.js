@@ -16,7 +16,7 @@ const router = express.Router()
 
 /**
  * @api {get} /users/:userId Get by id
- * @apiUse UserApi
+ * @apiUse UserAPI
  *
  * @apiGroup User
  * @apiName Show

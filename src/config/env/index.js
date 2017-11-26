@@ -8,6 +8,10 @@ export default {
     test: 'test'
   },
 
+  path: {
+    upload: `${process.cwd()}/uploads/`
+  },
+
   // Code conventions
   conventions: {
     number: 0,
@@ -20,6 +24,27 @@ export default {
   regex: {
     objectId: /^[0-9a-fA-F]{24}$/,
     phone: /^\+?1?(\d{10,12}$)/
+  },
+
+  // Limit
+  limit: {
+    customers: {
+      all: 20
+    }
+  },
+
+  // Mail template
+  mailTemplates: {
+    invitation: 'invitation'
+  },
+
+  // File
+  file: {
+    types: {
+      photo: 'photo',
+      zip: 'zip',
+      excel: 'excel'
+    }
   },
 
   // App locales

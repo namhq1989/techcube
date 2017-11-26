@@ -8,10 +8,10 @@ let config
 
 switch (env) {
   case 'production':
-    config = require('./env/production')
+    config = require('./env/production').default
     break
   case 'development':
-    config = require('./env/development')
+    config = require('./env/development').default
     break
   default:
     break

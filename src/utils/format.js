@@ -1,3 +1,7 @@
+import diacritics from 'diacritics'
+
+const removeDiacritics = diacritics.remove
+
 /**
  * Format phone number
  *
@@ -51,8 +55,21 @@ const lowerCaseFirstLetter = (str) => {
   return str.charAt(0).toLowerCase() + str.slice(1)
 }
 
+/**
+ * Transform string to searchable string
+ *
+ * @param  {String} string
+ * @return {String}
+ */
+const searchString = (string) => {
+  // Remove all special characters, except: _ - .
+  string = string.replace(/[`~!@#$%^&*()|+=?;:'",<>{}[]\/]/gi, '')
+  return new RegExp(removeDiacritics(string).toLowerCase(), 'i')
+}
+
 export default {
   phone,
   capitalize,
-  lowerCaseFirstLetter
+  lowerCaseFirstLetter,
+  searchString
 }

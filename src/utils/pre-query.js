@@ -1,9 +1,13 @@
+import xlsx from 'node-xlsx'
+import fs from 'fs'
+import config from '../config'
 import validation from './validation'
 import response from './response'
 import format from './format'
+import helper from './helper'
 import { ObjectId } from './mongoose'
 import locales from '../locales'
-import { User } from '../models'
+import { Customer, User } from '../models'
 
 function query(req, res, next, id, Model, message) {
   // Validate id first
@@ -24,11 +28,37 @@ function query(req, res, next, id, Model, message) {
   })
 }
 
+const uploadExcel = (req, res, next) => {
+  if (!req.file) {
+    return res.status(404).jsonp(response(false, {}, locales.NotFound.File, 404))
+  }
+
+  if (helper.getFileType(req.file.originalname) !== config.file.types.excel) {
+    return res.jsonp(response(false, {}, locales.Validation.Common.InvalidExcel))
+  }
+
+  // Read and assign to req
+  const filePath = config.path.upload + req.file.filename
+  const workSheetsFromFile = xlsx.parse(filePath)
+  const { data } = workSheetsFromFile[0]
+  data.splice(0, 1)
+  req.excelData = data
+  fs.unlink(filePath, () => {})
+
+  next()
+}
+
 const user = (req, res, next, id) => {
   query(req, res, next, id, User, locales.NotFound.User)
 }
 
+const customer = (req, res, next, id) => {
+  query(req, res, next, id, Customer, locales.NotFound.Customer)
+}
+
 // Export
 export default {
-  user
+  uploadExcel,
+  user,
+  customer
 }

@@ -15,18 +15,27 @@ export default {
   InvalidRequestData: 'Tham số không đúng định dạng, vui lòng kiểm tra lại',
   PathNotFound: 'Api không tìm thấy',
   Unauthorized: 'Xác thực tài khoản thất bại',
+  LoginFailed: 'Email hoặc mật khẩu không đúng, vui lòng kiểm tra lại',
+  RequireLogin: 'Bạn phải đăng nhập để thực hiện hành động này',
+  NoPermission: 'Bạn không có quyền thực hiện hành động này',
+  SendMailError: 'Gửi mail thất bại',
 
   // Not found document
   NotFound: {
-    User: notFoundText('Tài khoản')
+    User: notFoundText('Tài khoản'),
+    Customer: notFoundText('Khách hàng'),
+    File: notFoundText('File'),
+    MailTemplate: notFoundText('Mail template')
   },
 
   // Validation message
   Validation: {
     Common: {
       InvalidCity: invalidText('Thành phố'),
+      InvalidGender: invalidText('Giới tính'),
       InvalidLocale: invalidText('Ngôn ngữ'),
-      InvalidEmail: invalidText('Email')
+      InvalidEmail: invalidText('Email'),
+      InvalidExcel: invalidText('File excel')
     },
     User: {
       NameRequired: 'Tên không được trống',
@@ -35,5 +44,10 @@ export default {
       EmailExisted: 'Email này đã tồn tại trong hệ thống',
       PhoneExisted: 'Số điện thoại này đã tồn tại trong hệ thống'
     }
+  },
+
+  // Customer
+  Customer: {
+    ExcelFileNoData: 'File excel không có dữ liệu nào'
   }
 }
