@@ -89,7 +89,7 @@ const checkin = (req, res) => {
       res.jsonp(response(true, {
         customer,
         histories: results.histories
-      }))
+      }, locales.CheckinSuccess))
     }
   })
 }

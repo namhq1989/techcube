@@ -19,6 +19,7 @@ export default {
   RequireLogin: 'Bạn phải đăng nhập để thực hiện hành động này',
   NoPermission: 'Bạn không có quyền thực hiện hành động này',
   SendMailError: 'Gửi mail thất bại',
+  CheckinSuccess: 'Quét mã thành công!',
 
   // Not found document
   NotFound: {
