@@ -12,6 +12,15 @@ export default {
     upload: `${process.cwd()}/uploads/`
   },
 
+  // Device os
+  deviceOS: {
+    ios: 'ios',
+    android: 'android',
+    web: 'web',
+    mac: 'mac',
+    windows: 'windows'
+  },
+
   // Code conventions
   conventions: {
     number: 0,
