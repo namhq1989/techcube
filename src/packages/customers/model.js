@@ -9,6 +9,7 @@ import { format, helper } from '../../utils'
 import { mongoose, Schema } from '../../utils/mongoose'
 import Statics from './static'
 import Hooks from './hook'
+import { checkUniqueEmail } from './util'
 
 const removeDiacritics = diacritics.remove
 
@@ -33,7 +34,13 @@ const CustomerSchema = new Schema({
   },
   company: String,
   phone: String,
-  email: String,
+  email: {
+    type: String,
+    isEmail: {
+      message: locales.Validation.Common.InvalidEmail
+    },
+    validate: [checkUniqueEmail, locales.Validation.User.EmailExisted]
+  },
   note: String,
   statistic: {
     checkin: {

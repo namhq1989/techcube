@@ -35,9 +35,13 @@ const validateObject = {
       }
     }
   }),
-  email: Joi.string().email().allow('').options({
+  email: Joi.string().email().required().options({
     language: {
       key: '{{!email}}',
+      any: {
+        required: `Email ${text.IS_REQUIRED}`,
+        empty: `Email ${text.IS_EMPTY}`
+      },
       string: {
         email: `Email ${text.NOT_VALID}`
       }

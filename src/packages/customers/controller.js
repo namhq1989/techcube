@@ -70,14 +70,20 @@ const createByExcel = (req, res) => {
     return res.jsonp(response(false, {}, locales.Customer.ExcelFileNoData))
   }
 
+  const failed = []
   eachSeries(excelData, (record, cb) => {
-    const [name, phone, email, company, city, gender, note] = record
+    const [name, phone, email, company, note] = record
     const customer = new Customer({
-      name, phone, email, company, city, gender, note
+      name, phone, email, company, note
     })
-    customer.save(() => cb())
+    customer.save((error) => {
+      if (error) {
+        failed.push(email)
+      }
+      cb()
+    })
   }, () => {
-    res.jsonp(response(true))
+    res.jsonp(response(true, { failed }))
   })
 }
 
