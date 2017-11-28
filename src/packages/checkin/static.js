@@ -62,7 +62,7 @@ const allByCustomer = (customerId, page = 0, sort = '-createdAt', callback) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('event', 'name', 'user', 'name').lean().exec((error, checkins) => {
+        .populate('event', 'name').populate('customer', 'name').lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }

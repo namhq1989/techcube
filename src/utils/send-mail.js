@@ -7,7 +7,5 @@ import Mailer from '../modules/mailer'
  * @param  {String}   template
  */
 export default (data = {}, template) => {
-  Mailer(data, template, (error) => {
-    console.log('error', error)
-  })
+  Mailer(data, template, () => {})
 }

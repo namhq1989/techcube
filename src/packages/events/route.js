@@ -54,7 +54,7 @@ router.get('/:eventId', middleware.requiresAdmin, EventCtrl.show)
  * @apiParam {Date}     startAt
  * @apiParam {Date}     endAt
  */
-router.post('/', validation.event.create, EventCtrl.create)
+router.post('/', validation.event.create, middleware.requiresAdmin, EventCtrl.create)
 
 /**
  * @api {put} /events/:eventId Update event
