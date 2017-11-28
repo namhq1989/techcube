@@ -93,6 +93,7 @@ const getDeviceInfo = (ua) => {
 
     return info
   } catch (error) {
+    console.log('failed error', error)
     console.log('failed info', info)
     return info
   }
