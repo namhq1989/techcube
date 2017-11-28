@@ -58,6 +58,7 @@ const getFileType = (filename) => {
  * @return {Object}
  */
 const getDeviceInfo = (ua) => {
+  console.log('ua', ua)
   const info = {
     isMobile: false
   }
@@ -88,8 +89,11 @@ const getDeviceInfo = (ua) => {
       info.os = config.deviceOS.windows
     }
 
+    console.log('success info', info)
+
     return info
   } catch (error) {
+    console.log('failed info', info)
     return info
   }
 }
