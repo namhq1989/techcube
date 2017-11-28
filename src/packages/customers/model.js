@@ -33,6 +33,7 @@ const CustomerSchema = new Schema({
     default: config.genders.male
   },
   company: String,
+  companySearchString: String,
   phone: String,
   email: {
     type: String,
@@ -85,6 +86,7 @@ CustomerSchema.pre('save', function (next) {
 
   // Set search string
   this.searchString = removeDiacritics(this.name).toLowerCase()
+  this.companySearchString = removeDiacritics(this.company || '').toLowerCase()
 
   // Format phone number
   this.phone = format.phone(this.phone)

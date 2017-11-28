@@ -56,8 +56,7 @@ const validateObject = {
         min: `Số phân trang ${text.MUST_BE_LARGER_THAN_OR_EQUAL_TO} 0`,
       }
     }
-  }),
-  keyword: Joi.string().label('Keyword')
+  })
 }
 
 export default {
@@ -73,6 +72,6 @@ export default {
 
   // GET /customers
   all: {
-    query: lodash.pick(validateObject, ['page', 'keyword'])
+    query: lodash.pick(validateObject, ['page'])
   }
 }

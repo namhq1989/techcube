@@ -22,6 +22,8 @@ const all = (page = 0, keyword = '', sort = '-createdAt', callback) => {
     }, {
       searchString: format.searchString(keyword)
     }, {
+      companySearchString: format.searchString(keyword)
+    }, {
       phone: format.phone(keyword)
     }]
   }

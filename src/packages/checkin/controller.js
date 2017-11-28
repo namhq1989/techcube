@@ -1,4 +1,4 @@
-import { series } from 'async'
+import { series, parallel } from 'async'
 import config from '../../config'
 import { response, getError, helper } from '../../utils'
 import locales from '../../locales'
@@ -94,7 +94,44 @@ const checkin = (req, res) => {
   })
 }
 
+/**
+ * Recent checkin
+ *
+ */
+const recent = (req, res) => {
+  const { page = 0, start, end, sort = 'date' } = req.query
+  const limit = config.limit.checkin.all
+
+  const condition = {
+    date: {
+      $gte: new Date(start),
+      $lte: new Date(end)
+    }
+  }
+
+  parallel({
+    total: (cb) => {
+      Checkin.count(condition, (error, c) => cb(null, c))
+    },
+    checkin: (cb) => {
+      Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
+        .populate('event', 'name').populate('customer', 'name company').lean().exec((error, checkins) => {
+          if (!checkins) {
+            checkins = config.conventions.array
+          }
+          cb(null, checkins)
+        })
+    },
+    limitPerPage: (cb) => {
+      cb(null, limit)
+    }
+  }, (error, results) => {
+    res.jsonp(response(true, results))
+  })
+}
+
 // Export
 export default {
-  checkin
+  checkin,
+  recent
 }
