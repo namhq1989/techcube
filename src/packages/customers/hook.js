@@ -1,6 +1,5 @@
 import { parallel } from 'async'
-import config from '../../config'
-import { sendMail } from '../../utils'
+import Statics from './static'
 
 /**
  * Do something after customer saved
@@ -14,9 +13,7 @@ const postSave = (doc) => {
     parallel({
       sendEmail: (cb) => {
         if (doc.email) {
-          sendMail({
-            user: doc
-          }, config.mailTemplates.invitation)
+          Statics.sendInvitationEmail(doc)
         }
         cb()
       }

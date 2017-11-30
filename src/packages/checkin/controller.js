@@ -1,6 +1,6 @@
-import { series, parallel } from 'async'
+import { series, parallel, eachSeries } from 'async'
 import config from '../../config'
-import { response, getError, helper } from '../../utils'
+import { response, helper } from '../../utils'
 import locales from '../../locales'
 import { ObjectId } from '../../utils/mongoose'
 import { Customer, Checkin, Event } from '../../models'
@@ -14,7 +14,7 @@ const checkin = (req, res) => {
   const { code, latitude, longitude, deviceInfo } = req.body
 
   let customer
-  let event
+  let events = []
 
   series({
     findCustomer: (cb) => {
@@ -32,38 +32,39 @@ const checkin = (req, res) => {
     findEvent: (cb) => {
       const now = new Date()
 
-      Event.findOne({
+      Event.find({
         startAt: {
           $lte: now
         },
         endAt: {
           $gte: now
-        }
-      }, (error, doc) => {
-        event = doc
+        },
+        active: true
+      }, (error, docs) => {
+        events = docs
         cb()
       })
     },
     create: (cb) => {
       // Return if event not found
-      if (!event) {
+      if (!events || !events.length) {
         return cb()
       }
 
-      const doc = new Checkin({
-        customer: customer._id,
-        event: event._id,
-        latitude,
-        longitude
-      })
-      doc.device = helper.getDeviceInfo(deviceInfo)
+      eachSeries(events, (event, cb1) => {
+        const doc = new Checkin({
+          customer: customer._id,
+          event: event._id,
+          latitude,
+          longitude
+        })
+        doc.device = helper.getDeviceInfo(deviceInfo)
 
-      doc.save((error) => {
-        if (error) {
-          cb(true, getError.message(error))
-        } else {
-          cb()
-        }
+        doc.save(() => {
+          cb1()
+        })
+      }, () => {
+        cb()
       })
     },
     histories: (cb) => {
@@ -99,7 +100,7 @@ const checkin = (req, res) => {
  *
  */
 const recent = (req, res) => {
-  const { page = 0, start, end, sort = 'date' } = req.query
+  const { page = 0, start, end, sort = '-date' } = req.query
   const limit = config.limit.checkin.all
 
   const condition = {

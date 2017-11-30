@@ -79,7 +79,7 @@ router.post('/', validation.customer.create, CustomerCtrl.create)
 router.put('/:customerId', validation.customer.update, middleware.requiresAdmin, CustomerCtrl.update)
 
 /**
- * @api {post} /customersByExcel Create a set of customers by excel file
+ * @api {post} /customers/customersByExcel Create a set of customers by excel file
  * @apiUse CustomerAPI
  *
  * @apiGroup Customer
@@ -98,10 +98,21 @@ router.post('/customersByExcel', upload.single('file'), preQuery.uploadExcel, mi
  * @apiName CheckinHistories
  * @apiVersion 1.0.0
  *
- * @apiParam {Number}                             page=0
- * @apiParam {String="createdAt","-createdAt"}    sort=-createdAt
+ * @apiParam {Number}                   page=0
+ * @apiParam {String="date","-date"}    sort=-date
  */
-router.post('/:customerId/checkin', middleware.requiresAdmin, CustomerCtrl.checkinHistories)
+router.get('/:customerId/checkin', middleware.requiresAdmin, CustomerCtrl.checkinHistories)
+
+/**
+ * @api {post} /customers/:customerId/resendEmail Resend email
+ * @apiUse CustomerAPI
+ *
+ * @apiGroup Customer
+ * @apiName ResendEmail
+ * @apiVersion 1.0.0
+ *
+ */
+router.post('/:customerId/resendEmail', middleware.requiresAdmin, CustomerCtrl.resendEmail)
 
 /* Pre-query */
 router.param('customerId', preQuery.customer)

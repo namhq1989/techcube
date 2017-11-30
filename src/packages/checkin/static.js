@@ -11,7 +11,7 @@ import { Checkin } from '../../models'
  * @param {String}    sort
  * @param {Function}  callback
  */
-const allByEvent = (eventId, page = 0, sort = '-createdAt', callback) => {
+const allByEvent = (eventId, page = 0, sort = '-date', callback) => {
   eventId = new ObjectId(eventId)
   const limit = config.limit.checkin.all
 
@@ -25,7 +25,7 @@ const allByEvent = (eventId, page = 0, sort = '-createdAt', callback) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('event', 'name', 'user', 'name').lean().exec((error, checkins) => {
+        .populate('customer', 'name').lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }
@@ -48,7 +48,7 @@ const allByEvent = (eventId, page = 0, sort = '-createdAt', callback) => {
  * @param {String}    sort
  * @param {Function}  callback
  */
-const allByCustomer = (customerId, page = 0, sort = '-createdAt', callback) => {
+const allByCustomer = (customerId, page = 0, sort = '-date', callback) => {
   customerId = new ObjectId(customerId)
   const limit = config.limit.checkin.all
 
@@ -62,7 +62,7 @@ const allByCustomer = (customerId, page = 0, sort = '-createdAt', callback) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('event', 'name').populate('customer', 'name').lean().exec((error, checkins) => {
+        .populate('event', 'name').lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }

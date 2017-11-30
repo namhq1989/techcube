@@ -1,7 +1,7 @@
 import { parallel } from 'async'
 import config from '../../config'
 import { format } from '../../utils'
-import { Event } from '../../models'
+import { Event, Checkin } from '../../models'
 
 /**
  * Get list
@@ -23,7 +23,7 @@ const all = (page = 0, keyword = '', sort = '-createdAt', callback) => {
     total: (cb) => {
       Event.count(condition, (error, c) => cb(null, c))
     },
-    customers: (cb) => {
+    events: (cb) => {
       Event.find(condition).sort(sort).skip(page * limit).limit(limit).lean().exec((error, events) => {
         if (!events) {
           events = config.conventions.array
@@ -46,7 +46,19 @@ const all = (page = 0, keyword = '', sort = '-createdAt', callback) => {
  * @param {Object} checkin
  */
 const newCheckin = (checkin) => {
-  updateStatistic(checkin.event, ['checkin'], [1])
+  Checkin.aggregate([
+    { $match: { event: checkin.event } },
+    { $group: { _id: '$customer', total: { $sum: 1 } } }
+  ], (error, data) => {
+    let totalCheckin = 0
+    let totalCustomer = 0
+    if (data && data.length) {
+      totalCheckin = data.reduce((prev, next) => prev + next.total, 0)
+      totalCustomer = data.length
+    }
+
+    updateStatistic(checkin.event, ['checkin', 'customer'], [totalCheckin, totalCustomer])
+  })
 }
 
 /**
@@ -70,7 +82,7 @@ const updateStatistic = (eventId, keys, values) => {
   Event.update({
     _id: eventId
   }, {
-    $inc: statisticCondition
+    $set: statisticCondition
   }).exec()
 }
 

@@ -23,7 +23,7 @@ export default function (data, template, callback) {
 
   // Setup email
   const options = {
-    to: data.user.email,
+    to: data.email,
     from: config.mailer.from
   }
 

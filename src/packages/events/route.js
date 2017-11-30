@@ -90,10 +90,10 @@ router.patch('/:eventId', middleware.requiresAdmin, EventCtrl.changeStatus)
  * @apiName CheckinHistories
  * @apiVersion 1.0.0
  *
- * @apiParam {Number}                             page=0
- * @apiParam {String="createdAt","-createdAt"}    sort=-createdAt
+ * @apiParam {Number}                   page=0
+ * @apiParam {String="date","-date"}    sort=-date
  */
-router.post('/:eventId/checkin', middleware.requiresAdmin, EventCtrl.checkinHistories)
+router.get('/:eventId/checkin', middleware.requiresAdmin, EventCtrl.checkinHistories)
 
 /* Pre-query */
 router.param('eventId', preQuery.event)

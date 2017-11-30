@@ -31,8 +31,16 @@ const EventSchema = new Schema({
     required: locales.Validation.Event.NameRequired,
     default: Date.now
   },
+  estimateCustomers: {
+    type: Number,
+    default: 0
+  },
   statistic: {
     checkin: {
+      type: Number,
+      default: 0
+    },
+    customer: {
       type: Number,
       default: 0
     }

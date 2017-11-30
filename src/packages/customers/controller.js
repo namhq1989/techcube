@@ -50,11 +50,24 @@ const update = (req, res) => {
   let customer = req.customerData
 
   customer = Object.assign(customer, body)
-  customer.save((error) => {
-    if (error) {
-      return res.jsonp(response(false, {}, getError.message(error)))
+
+  // Check exist email first
+  Customer.count({
+    email: body.email,
+    _id: {
+      $ne: customer._id
     }
-    res.jsonp(response(true))
+  }, (error, c) => {
+    if (error || c) {
+      return res.jsonp(response(false, {}, locales.Validation.User.EmailExisted))
+    }
+
+    customer.update(customer.toJSON(), (error) => {
+      if (error) {
+        return res.jsonp(response(false, {}, getError.message(error)))
+      }
+      res.jsonp(response(true))
+    })
   })
 }
 
@@ -74,7 +87,11 @@ const createByExcel = (req, res) => {
   eachSeries(excelData, (record, cb) => {
     const [name, phone, email, company, note] = record
     const customer = new Customer({
-      name, phone, email, company, note
+      name,
+      phone,
+      email,
+      company,
+      note
     })
     customer.save((error) => {
       if (error) {
@@ -101,6 +118,15 @@ const checkinHistories = (req, res) => {
   })
 }
 
+/**
+ * Resend email
+ *
+ */
+const resendEmail = (req, res) => {
+  Customer.sendInvitationEmail(req.customerData.toJSON())
+  res.jsonp(response(true))
+}
+
 // Export
 export default {
   all,
@@ -108,5 +134,6 @@ export default {
   create,
   update,
   createByExcel,
-  checkinHistories
+  checkinHistories,
+  resendEmail
 }

@@ -35,6 +35,17 @@ CheckinSchema.index({ event: 1 }).index({ customer: 1 }).index({ event: 1, custo
 CheckinSchema.statics = Statics
 
 /**
+ * Pre-save hook
+ */
+CheckinSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this._isNew = true
+  }
+
+  next()
+})
+
+/**
  * Post save hook
  */
 CheckinSchema.post('save', (doc) => {

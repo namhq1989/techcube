@@ -1,7 +1,7 @@
 import { parallel } from 'async'
 import lodash from 'lodash'
 import config from '../../config'
-import { format } from '../../utils'
+import { format, sendMail } from '../../utils'
 import { Customer, Checkin } from '../../models'
 
 /**
@@ -55,14 +55,7 @@ const all = (page = 0, keyword = '', sort = '-createdAt', callback) => {
  * @param {Function}  callback
  */
 const info = (data, callback) => {
-  parallel({
-    checkin: (cb) => {
-      cb(null, [])
-    }
-  }, (error, results) => {
-    data = lodash.pick(results, ['_id', 'name', 'phone', 'email', 'company', 'createdAt', 'note', 'statistic'])
-    callback(Object.assign(data, results))
-  })
+  callback(lodash.pick(data, ['_id', 'name', 'phone', 'email', 'company', 'createdAt', 'note', 'statistic']))
 }
 
 /**
@@ -72,15 +65,17 @@ const info = (data, callback) => {
  */
 const newCheckin = (checkin) => {
   Checkin.aggregate([
-    { $match: { event: checkin.event, customer: checkin.customer } },
+    { $match: { customer: checkin.customer } },
     { $group: { _id: '$event', total: { $sum: 1 } } }
   ], (error, data) => {
+    let totalCheckin = 0
     let totalEvent = 0
-    if (data && data[0]) {
-      totalEvent = data[0].total
+    if (data && data.length) {
+      totalCheckin = data.reduce((prev, next) => prev + next.total, 0)
+      totalEvent = data.length
     }
 
-    updateStatistic(checkin.customer, ['checkin', 'event'], [1, totalEvent])
+    updateStatistic(checkin.customer, ['checkin', 'event'], [totalCheckin, totalEvent])
   })
 }
 
@@ -105,8 +100,20 @@ const updateStatistic = (customerId, keys, values) => {
   Customer.update({
     _id: customerId
   }, {
-    $inc: statisticCondition
+    $set: statisticCondition
   }).exec()
+}
+
+/**
+ * Send invitation email to customer
+ *
+ * @param {Object} customer
+ */
+const sendInvitationEmail = (customer) => {
+  sendMail({
+    email: customer.email,
+    customer
+  }, config.mailTemplates.invitation)
 }
 
 // Export
@@ -114,5 +121,6 @@ export default {
   all,
   info,
   newCheckin,
-  updateStatistic
+  updateStatistic,
+  sendInvitationEmail
 }

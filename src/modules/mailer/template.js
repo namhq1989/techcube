@@ -5,9 +5,9 @@ import QRCode from 'qrcode'
  *
  */
 function invitation(data = {}, options, callback) {
-  QRCode.toDataURL(data.user.qrCode, (error, url) => {
+  QRCode.toDataURL(data.customer.qrCode, (error, url) => {
     options.html = `
-      Hi ${data.user.name},
+      Hi ${data.customer.name},
       <br>
       Đây là email tự động gửi bởi hệ thống! Mã QR để tham gia sự kiện của bạn là:
       <br>
