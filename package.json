@@ -5,9 +5,9 @@
   "main": "dist",
   "scripts": {
     "dev": "nodemon -w src --exec \"NODE_ENV=development DEBUG=App,$DEBUG babel-node src --presets es2015,stage-0\"",
-    "start": "nodemon -w src --exec \"NODE_ENV=production DEBUG=App,$DEBUG babel-node src --presets es2015,stage-0\"",
+    "prod": "nodemon -w src --exec \"NODE_ENV=production DEBUG=App,$DEBUG babel-node src --presets es2015,stage-0\"",
     "build": "babel src -s -D -d dist --presets es2015,stage-0",
-    "prestart": "npm run -s build",
+    "start": "npm run prod",
     "test": "eslint src",
     "lint": "eslint --ext .js src",
     "precommit": "npm run lint",
