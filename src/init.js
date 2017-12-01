@@ -3,7 +3,6 @@
  */
 import { parallel } from 'async'
 import moment from 'moment'
-import { env } from './utils'
 
 const init = () => {
   parallel({
@@ -21,18 +20,6 @@ const init = () => {
         }
       })
 
-      cb()
-    },
-    admin: (cb) => {
-      if (env.isProduction()) {
-        global.adminId = '573fe5f870a07c52085dba15'
-      } else {
-        global.adminId = '573fe5f870a07c52085dba15'
-      }
-      if (!global.adminId) {
-        console.log('*** Please setup a SUPPORT ACCOUNT before run server')
-        process.exit(1)
-      }
       cb()
     }
   })
