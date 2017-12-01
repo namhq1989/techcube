@@ -11,7 +11,7 @@ import { Customer, Checkin, Event } from '../../models'
  */
 const checkin = (req, res) => {
   // Fetch params
-  const { code, latitude, longitude, deviceInfo } = req.body
+  const { code, latitude, longitude, device } = req.body
 
   let customer
   let events = []
@@ -58,7 +58,8 @@ const checkin = (req, res) => {
           latitude,
           longitude
         })
-        doc.device = helper.getDeviceInfo(deviceInfo)
+        doc.device = helper.getDeviceInfo(device.info)
+        doc.device.name = device.name
 
         doc.save(() => {
           cb1()

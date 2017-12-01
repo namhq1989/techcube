@@ -24,7 +24,9 @@ const router = express.Router()
  * @apiParam {String}   code
  * @apiParam {Number}   latitude
  * @apiParam {Number}   longitude
- * @apiParam {String}   deviceInfo
+ * @apiParam {Object}   device
+ * @apiParam {String}   device.info
+ * @apiParam {String}   device.name
  */
 router.post('/', CheckinCtrl.checkin)
 

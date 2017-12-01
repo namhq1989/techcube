@@ -28,8 +28,8 @@ export default function (app) {
     // Get ip
     publicIp.v4().then((v4ip) => {
       const table = new CliTable({
-        head: ['#', 'Local IP', 'Public IP', 'Num of CPUs'],
-        colWidths: [5, 20, 20, 20]
+        head: ['#', 'Local IP', 'Public IP', 'Num of CPUs', 'Environment'],
+        colWidths: [5, 20, 20, 20, process.env.NODE_ENV.toUpperCase()]
       })
       table.push(['', ipTool.address(), v4ip, NUMCPUS])
       console.log(table.toString())
@@ -92,8 +92,8 @@ export default function (app) {
       // Get ip
       publicIp.v4().then((v4ip) => {
         const table = new CliTable({
-          head: ['#', 'Local IP', 'Public IP', 'Num of CPUs', 'Worker id', 'Port'],
-          colWidths: [5, 20, 20, 20, 20, 20]
+          head: ['#', 'Local IP', 'Public IP', 'Num of CPUs', 'Worker id', 'Port', 'Environment'],
+          colWidths: [5, 20, 20, 20, 20, 20, process.env.NODE_ENV.toUpperCase()]
         })
         table.push(['', ipTool.address(), v4ip, NUMCPUS, process.pid, server.address().port])
         console.log(table.toString())
