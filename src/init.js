@@ -30,7 +30,7 @@ const init = () => {
         global.adminId = '573fe5f870a07c52085dba15'
       }
       if (!global.adminId) {
-        console.log('*** Please setup a SUPPORT ACCOUNT before run server'.red)
+        console.log('*** Please setup a SUPPORT ACCOUNT before run server')
         process.exit(1)
       }
       cb()
