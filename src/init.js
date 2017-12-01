@@ -25,7 +25,7 @@ const init = () => {
     },
     admin: (cb) => {
       if (env.isProduction()) {
-        global.adminId = process.env.ADMIN_ID
+        global.adminId = '573fe5f870a07c52085dba15'
       } else {
         global.adminId = '573fe5f870a07c52085dba15'
       }
