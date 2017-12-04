@@ -7,6 +7,8 @@ import config from '../../config'
 import locales from '../../locales'
 import templates from './template'
 
+console.log(config.mailer)
+
 // Setup transport
 const transport = nodemailer.createTransport(config.mailer)
 
