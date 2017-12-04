@@ -58,8 +58,11 @@ const checkin = (req, res) => {
           latitude,
           longitude
         })
-        doc.device = helper.getDeviceInfo(device.info)
-        doc.device.name = device.name
+
+        if (device.info && device.name) {
+          doc.device = helper.getDeviceInfo(device.info)
+          doc.device.name = device.name
+        }
 
         doc.save(() => {
           cb1()
