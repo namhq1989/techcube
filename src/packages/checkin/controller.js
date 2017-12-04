@@ -59,7 +59,7 @@ const checkin = (req, res) => {
           longitude
         })
 
-        if (device.info && device.name) {
+        if (device && device.info && device.name) {
           doc.device = helper.getDeviceInfo(device.info)
           doc.device.name = device.name
         }
