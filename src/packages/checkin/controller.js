@@ -72,7 +72,7 @@ const checkin = (req, res) => {
       })
     },
     histories: (cb) => {
-      Checkin.allByCustomer(customer._id, 0, '', (data) => {
+      Checkin.allByCustomer(customer._id, 0, '-date', (data) => {
         cb(null, data.checkin)
       })
     }
