@@ -1,6 +1,6 @@
 export default {
   // Db
-  db: 'mongodb://localhost/techcube',
+  db: 'mongodb://localhost/imed',
   dbOptions: {
     db: { native_parser: true },
     server: {
