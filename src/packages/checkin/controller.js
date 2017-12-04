@@ -81,7 +81,7 @@ const checkin = (req, res) => {
       }
     }
 
-    if (error) {
+    if (error || !customer || !events || !events.length) {
       const message = !customer ? locales.NotFound.User : locales.Validation.Event.NoActiveEvent
       res.jsonp(response(false, {
         customer,
