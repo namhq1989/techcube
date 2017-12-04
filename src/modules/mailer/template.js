@@ -9,18 +9,13 @@ function invitation(data = {}, options, callback) {
     options.html = `
       Hi ${data.customer.name},
       <br>
-      Đây là email tự động gửi bởi hệ thống! Mã QR để tham gia sự kiện của bạn là:
+      Đây là mã QR để bạn tham gia vào các sự kiện của iMED:
       <br>
       <div style="text-align: center">
         <img src="cid:qrcode_attachment" alt="" width="250" height="250" />
       </div>
       <br>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      <br>
-      Thanks!
+      Trân trọng cảm ơn!
     `
 
     options.attachments = [{
@@ -28,7 +23,7 @@ function invitation(data = {}, options, callback) {
       cid: 'qrcode_attachment'
     }]
 
-    options.subject = 'Techcube - Đăng ký thành công'
+    options.subject = 'iMED - Mã tham gia sự kiện'
     callback(options)
   })
 }
