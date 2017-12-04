@@ -21,13 +21,13 @@ export default {
 
   // Mailer
   mailer: {
-    from: 'Techcube <support@techcube.com>',
-    report: 'Tech Cube',
+    from: 'iMED <marketing@imed.com.vn>',
+    report: 'iMED',
     transportMethod: 'SMTP',
     service: 'Gmail',
     auth: {
-      user: 'shinaekwon2n@gmail.com',
-      pass: '646341aZ?QP'
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD
     }
   }
 }
