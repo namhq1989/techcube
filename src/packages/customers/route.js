@@ -57,6 +57,8 @@ router.get('/:customerId', middleware.requiresAdmin, CustomerCtrl.show)
  * @apiParam {String}   phone
  * @apiParam {String}   email
  * @apiParam {String}   note
+ * @apiParam {String}   eventId
+ * @apiParam {String}   planId
  */
 router.post('/', validation.customer.create, middleware.requiresCashier, CustomerCtrl.create)
 

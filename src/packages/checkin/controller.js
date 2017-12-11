@@ -28,6 +28,14 @@ const getListArea = (req, res) => {
     plan: {
       _id: new ObjectId(),
       name: 'Plan 1'
+    },
+    customer: {
+      _id: new ObjectId(),
+      name: 'Customer 1'
+    },
+    event: {
+      _id: new ObjectId(),
+      name: 'Event 1'
     }
   }))
 }
