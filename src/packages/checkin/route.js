@@ -15,6 +15,17 @@ const router = express.Router()
  */
 
 /**
+ * @api {get} /checkin Get customer checkin areas list
+ *
+ * @apiGroup Checkin
+ * @apiName ListCheckinAreas
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String}   code
+ */
+router.get('/', middleware.requiresStaff, CheckinCtrl.getListArea)
+
+/**
  * @api {post} /checkin Checkin
  *
  * @apiGroup Checkin
@@ -27,8 +38,10 @@ const router = express.Router()
  * @apiParam {Object}   device
  * @apiParam {String}   device.info
  * @apiParam {String}   device.name
+ * @apiParam {String}   eventId
+ * @apiParam {String}   areaId
  */
-router.post('/', CheckinCtrl.checkin)
+router.post('/', middleware.requiresStaff, CheckinCtrl.checkin)
 
 /**
  * @api {get} /checkin Recent checkin

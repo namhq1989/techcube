@@ -1,6 +1,7 @@
 import { series, parallel } from 'async'
 import locales from '../../locales'
 import { response, getError, env, helper } from '../../utils'
+import { ObjectId } from '../../utils/mongoose'
 import { User, Customer, Event } from '../../models'
 
 /**
@@ -53,10 +54,57 @@ const login = (req, res) => {
     if (error) {
       return res.jsonp(response(false, {}, getError.last(results)))
     }
+
     res.jsonp(response(true, {
       user,
       token: helper.token(user)
     }))
+  })
+}
+
+/**
+ * Get app data
+ *
+ */
+const data = (req, res) => {
+  parallel({
+    events: (cb) => {
+      cb(null, [{
+        _id: new ObjectId(),
+        name: 'Sample event 1',
+        plans: [{
+          _id: new ObjectId(),
+          name: 'Plan 1',
+          fee: 0
+        }, {
+          _id: new ObjectId(),
+          name: 'Plan 2',
+          fee: 20000
+        }, {
+          _id: new ObjectId(),
+          name: 'Plan 3',
+          fee: 500000
+        }]
+      }, {
+        _id: new ObjectId(),
+        name: 'Sample event 2',
+        plans: [{
+          _id: new ObjectId(),
+          name: 'Plan 1',
+          fee: 0
+        }, {
+          _id: new ObjectId(),
+          name: 'Plan 2',
+          fee: 10000
+        }, {
+          _id: new ObjectId(),
+          name: 'Plan 3',
+          fee: 100000
+        }]
+      }])
+    }
+  }, (error, results) => {
+    res.jsonp(response(true, results))
   })
 }
 
@@ -86,5 +134,6 @@ const dashboard = (req, res) => {
 // Export
 export default {
   login,
-  dashboard
+  dashboard,
+  data
 }

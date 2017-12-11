@@ -2,6 +2,7 @@
  * API middleware
  */
 
+import { parallel } from 'async'
 import config from './config'
 import locales from './locales'
 import { response, validation } from './utils'
@@ -14,7 +15,7 @@ function isAuthenticated(user) {
 
 function isAdmin(user, callback) {
   if (!validation.isObjectId(user._id)) {
-    return false
+    return callback(false)
   }
 
   User.count({
@@ -22,6 +23,50 @@ function isAdmin(user, callback) {
     role: config.user.roles.admin
   }, (error, c) => {
     callback(c)
+  })
+}
+
+function isCashier(user, callback) {
+  if (!validation.isObjectId(user._id)) {
+    return callback(false)
+  }
+
+  parallel({
+    admin: (cb) => {
+      isAdmin(user, value => cb(null, value))
+    },
+    cashier: (cb) => {
+      User.count({
+        _id: new ObjectId(user._id),
+        role: config.user.roles.cashier
+      }, (error, c) => {
+        cb(null, c)
+      })
+    }
+  }, (error, results) => {
+    callback(results.admin || results.cashier)
+  })
+}
+
+function isStaff(user, callback) {
+  if (!validation.isObjectId(user._id)) {
+    return callback(false)
+  }
+
+  parallel({
+    admin: (cb) => {
+      isAdmin(user, value => cb(null, value))
+    },
+    staff: (cb) => {
+      User.count({
+        _id: new ObjectId(user._id),
+        role: config.user.roles.staff
+      }, (error, c) => {
+        cb(null, c)
+      })
+    }
+  }, (error, results) => {
+    callback(results.admin || results.staff)
   })
 }
 
@@ -47,8 +92,34 @@ function requiresAdmin(req, res, next) {
   })
 }
 
+/**
+ * Require cashier role to do next action
+ */
+function requiresCashier(req, res, next) {
+  isCashier(req.user, (isAuthorized) => {
+    if (!isAuthenticated(req.user) || !isAuthorized) {
+      return res.status(401).jsonp(response(false, {}, locales.NoPermission, 401))
+    }
+    next()
+  })
+}
+
+/**
+ * Require staff role to do next action
+ */
+function requiresStaff(req, res, next) {
+  isStaff(req.user, (isAuthorized) => {
+    if (!isAuthenticated(req.user) || !isAuthorized) {
+      return res.status(401).jsonp(response(false, {}, locales.NoPermission, 401))
+    }
+    next()
+  })
+}
+
 // Export
 export default {
   requiresLogin,
-  requiresAdmin
+  requiresAdmin,
+  requiresCashier,
+  requiresStaff
 }

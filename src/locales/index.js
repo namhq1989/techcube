@@ -27,7 +27,9 @@ export default {
     Customer: notFoundText('Khách hàng'),
     File: notFoundText('File'),
     MailTemplate: notFoundText('Mail template'),
-    Event: notFoundText('Sự kiện')
+    Event: notFoundText('Sự kiện'),
+    Plan: notFoundText('Gói dịch vụ'),
+    Area: notFoundText('Khu vực')
   },
 
   // Validation message
@@ -53,6 +55,18 @@ export default {
       StartAtRequired: 'Thời gian bắt đầu sự kiện không được trống',
       EndAtRequired: 'Thời gian kết thúc sự kiện không được trống',
       NoActiveEvent: 'Không tìm thấy sự kiện nào đang diễn ra trong thời gian này'
+    },
+    Area: {
+      NameRequired: 'Tên không được trống',
+      NameMinLength: `Tên không được ít hơn ${config.area.validate.nameMinLength} ký tự`,
+      NameMaxLength: `Tên không được quá ${config.area.validate.nameMaxLength} ký tự`,
+      StartAtRequired: 'Giờ bắt đầu không được trống',
+      EndAtRequired: 'Giờ kết thúc không được trống'
+    },
+    Plan: {
+      NameRequired: 'Tên không được trống',
+      NameMinLength: `Tên không được ít hơn ${config.plan.validate.nameMinLength} ký tự`,
+      NameMaxLength: `Tên không được quá ${config.plan.validate.nameMaxLength} ký tự`
     }
   },
 

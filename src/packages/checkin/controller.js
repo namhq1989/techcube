@@ -6,12 +6,40 @@ import { ObjectId } from '../../utils/mongoose'
 import { Customer, Checkin, Event } from '../../models'
 
 /**
+ * Get list checkin area
+ *
+ */
+const getListArea = (req, res) => {
+  // Fetch params
+  // const { code } = req.query
+  const id = '5a24d186561931eea092e3e3'
+  res.jsonp(response(true, {
+    areas: [{
+      _id: new ObjectId(),
+      name: 'Area 1'
+    }, {
+      _id: id,
+      name: 'Area 2'
+    }, {
+      _id: new ObjectId(),
+      name: 'Area 3'
+    }],
+    currentArea: id,
+    plan: {
+      _id: new ObjectId(),
+      name: 'Plan 1'
+    }
+  }))
+}
+
+/**
  * Checkin
  *
  */
 const checkin = (req, res) => {
   // Fetch params
-  const { code, latitude, longitude, device } = req.body
+  const { code, latitude, longitude, device, areaId } = req.body
+  const staffId = req.user._id
 
   let customer
   let events = []
@@ -55,8 +83,10 @@ const checkin = (req, res) => {
         const doc = new Checkin({
           customer: customer._id,
           event: event._id,
+          area: areaId,
           latitude,
-          longitude
+          longitude,
+          byStaff: staffId
         })
 
         if (device && device.info && device.name) {
@@ -137,6 +167,7 @@ const recent = (req, res) => {
 
 // Export
 export default {
+  getListArea,
   checkin,
   recent
 }

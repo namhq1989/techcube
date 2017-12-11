@@ -15,9 +15,17 @@ const CheckinSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Event'
   },
+  area: {
+    type: Schema.Types.ObjectId,
+    ref: 'Area'
+  },
   latitude: Number,
   longitude: Number,
   device: Schema.Types.Mixed,
+  byStaff: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   date: {
     type: Date,
     default: Date.now

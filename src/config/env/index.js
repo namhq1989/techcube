@@ -45,6 +45,9 @@ export default {
     },
     checkin: {
       all: 20
+    },
+    users: {
+      all: 20
     }
   },
 
@@ -87,12 +90,16 @@ export default {
   // User
   user: {
     roles: {
+      list: 'admin staff cashier',
       admin: 'admin',
-      staff: 'staff'
+      staff: 'staff',
+      cashier: 'cashier'
     },
     validate: {
       nameMinLength: 3,
-      nameMaxLength: 32
+      nameMaxLength: 32,
+      passwordMinLength: 6,
+      passwordMaxLength: 32
     }
   },
 
@@ -101,6 +108,22 @@ export default {
     validate: {
       nameMinLength: 3,
       nameMaxLength: 999
+    }
+  },
+
+  // Area
+  area: {
+    validate: {
+      nameMinLength: 3,
+      nameMaxLength: 256
+    }
+  },
+
+  // Plan
+  plan: {
+    validate: {
+      nameMinLength: 3,
+      nameMaxLength: 256
     }
   }
 }

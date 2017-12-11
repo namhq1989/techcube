@@ -24,6 +24,20 @@ const router = express.Router()
 router.post('/login', CommonCtrl.login)
 
 /**
+ * @apiDefine CommonAPI
+ * @apiHeader {String} Authorization User Access token
+ */
+
+/**
+ * @api {get} /data App data
+ *
+ * @apiGroup Common
+ * @apiName Data
+ * @apiVersion 1.0.0
+ */
+router.get('/data', middleware.requiresLogin, CommonCtrl.data)
+
+/**
  * @api {get} /dashboard Dashboard
  * @apiUse CommonAPI
  *

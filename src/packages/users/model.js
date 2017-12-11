@@ -49,11 +49,9 @@ const UserSchema = new Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   salt: String,
-  statuses: {
-    banned: {
-      type: Boolean,
-      default: false
-    }
+  active: {
+    type: Boolean,
+    default: true
   },
   createdAt: {
     type: Date,
