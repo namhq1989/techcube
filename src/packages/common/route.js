@@ -34,6 +34,9 @@ router.post('/login', CommonCtrl.login)
  * @apiGroup Common
  * @apiName Data
  * @apiVersion 1.0.0
+ *
+ * @apiParam {String}     email
+ * @apiParam {String}     password
  */
 router.get('/data', middleware.requiresLogin, CommonCtrl.data)
 
