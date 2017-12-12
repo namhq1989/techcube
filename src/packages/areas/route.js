@@ -17,7 +17,7 @@ const router = express.Router()
  */
 
 /**
- * @api {get} /areas/:eventId Get all areas
+ * @api {get} /areas/event/:eventId Get all areas
  * @apiUse AreaAPI
  *
  * @apiGroup Area
@@ -25,7 +25,18 @@ const router = express.Router()
  * @apiVersion 1.0.0
  *
  */
-router.get('/:eventId', middleware.requiresAdmin, AreaCtrl.all)
+router.get('/event/:eventId', middleware.requiresAdmin, AreaCtrl.all)
+
+/**
+ * @api {get} /areas/:areaId Get by id
+ * @apiUse AreaAPI
+ *
+ * @apiGroup Area
+ * @apiName Show
+ * @apiVersion 1.0.0
+ *
+ */
+router.get('/:areaId', middleware.requiresAdmin, AreaCtrl.show)
 
 /**
  * @api {post} /areas Create

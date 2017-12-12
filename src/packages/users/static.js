@@ -13,7 +13,7 @@ import { User } from '../../models'
  * @param {String}   role
  * @param {Function} callback
  */
-const all = (page = 0, sort = '-createdAt', keyword = '', role = 'all', callback) => {
+const all = (page = 0, role = 'all', keyword = '', sort = '-createdAt', callback) => {
   const limit = config.limit.users.all
 
   const condition = {}
@@ -56,7 +56,7 @@ const all = (page = 0, sort = '-createdAt', keyword = '', role = 'all', callback
  * @param {Function} callback
  */
 const info = (data, callback) => {
-  data = lodash.pick(data, ['_id', 'name', 'phone', 'email', 'statuses', 'role', 'locale', 'createdAt'])
+  data = lodash.pick(data, ['_id', 'name', 'phone', 'email', 'active', 'role', 'locale', 'createdAt'])
   callback(data)
 }
 

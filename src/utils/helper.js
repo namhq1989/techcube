@@ -94,10 +94,43 @@ const getDeviceInfo = (ua) => {
   }
 }
 
+/**
+ * Check that given time is between start and end time or not
+ *
+ * @param  {Date}     givenTime
+ * @param  {Date}     beginTime
+ * @param  {Date}     endTime
+ * @return {Boolean}
+ */
+const isInTimeRange = (givenTime, beginTime, endTime) => {
+  let isIn = false
+  givenTime = givenTime.getTime()
+
+  if (beginTime) {
+    beginTime = (new Date(beginTime)).getTime()
+  }
+  if (endTime) {
+    endTime = (new Date(endTime)).getTime()
+  }
+
+  if (!beginTime && !endTime) {
+    isIn = true
+  } else if (beginTime && !endTime) {
+    isIn = (givenTime >= beginTime)
+  } else if (!beginTime && endTime) {
+    isIn = (givenTime <= endTime)
+  } else {
+    isIn = ((givenTime >= beginTime) && (givenTime <= endTime))
+  }
+
+  return isIn
+}
+
 // Export
 export default {
   token,
   customerQRCode,
   getFileType,
-  getDeviceInfo
+  getDeviceInfo,
+  isInTimeRange
 }

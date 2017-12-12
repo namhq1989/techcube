@@ -17,15 +17,15 @@ const router = express.Router()
  */
 
 /**
- * @api {get} /plans/:eventId Get all plans
+ * @api {get} /plans/:planId Get plan
  * @apiUse PlanAPI
  *
  * @apiGroup Plan
- * @apiName All
+ * @apiName Show
  * @apiVersion 1.0.0
  *
  */
-router.get('/:eventId', middleware.requiresAdmin, PlanCtrl.all)
+router.get('/:planId', middleware.requiresAdmin, PlanCtrl.show)
 
 /**
  * @api {post} /plans Create

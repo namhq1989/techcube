@@ -20,6 +20,7 @@ export default {
   NoPermission: 'Bạn không có quyền thực hiện hành động này',
   SendMailError: 'Gửi mail thất bại',
   CheckinSuccess: 'Quét mã thành công!',
+  CannotCheckinArea: 'Khách không có quyền checkin khu vực này',
 
   // Not found document
   NotFound: {

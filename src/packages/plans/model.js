@@ -27,6 +27,10 @@ const PlanSchema = new Schema({
     type: Number,
     default: 0
   },
+  active: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

@@ -44,6 +44,20 @@ router.get('/', validation.customer.all, middleware.requiresAdmin, CustomerCtrl.
 router.get('/:customerId', middleware.requiresAdmin, CustomerCtrl.show)
 
 /**
+ * @api {post} /customers/upgradePlan Upgrade customer plan
+ *
+ * @apiGroup Customer
+ * @apiName UpgradePlan
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String}   email
+ * @apiParam {String}   phone
+ * @apiParam {String}   eventId
+ * @apiParam {String}   planId
+ */
+router.post('/upgradePlan', validation.customer.upgradePlan, middleware.requiresCashier, CustomerCtrl.upgradePlan)
+
+/**
  * @api {post} /customers Create new customer
  *
  * @apiGroup Customer

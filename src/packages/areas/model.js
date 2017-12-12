@@ -27,6 +27,14 @@ const AreaSchema = new Schema({
     type: Date,
     required: locales.Validation.Area.EndAtRequired
   },
+  numOfCheckin: {
+    type: Number,
+    default: 1
+  },
+  active: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

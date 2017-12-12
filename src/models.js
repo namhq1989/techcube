@@ -4,6 +4,7 @@ import Event from './packages/events/model'
 import Checkin from './packages/checkin/model'
 import Plan from './packages/plans/model'
 import Area from './packages/areas/model'
+import CustomerAndEventStatus from './packages/customer-and-event-status/model'
 
 export {
   User,
@@ -11,5 +12,6 @@ export {
   Event,
   Checkin,
   Plan,
-  Area
+  Area,
+  CustomerAndEventStatus
 }

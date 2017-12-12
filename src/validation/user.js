@@ -72,7 +72,7 @@ export default {
 
   // PUT /users/:userId
   update: {
-    body: lodash.pick(validateObject, ['name', 'email', 'password', 'role'])
+    body: lodash.pick(validateObject, ['name', 'email', 'role'])
   },
 
   // GET /users

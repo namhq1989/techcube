@@ -1,5 +1,6 @@
+import { parallel } from 'async'
 import { response, getError } from '../../utils'
-import { Event, Checkin } from '../../models'
+import { Event, Checkin, Area, Plan } from '../../models'
 
 /**
  * Get list
@@ -19,7 +20,20 @@ const all = (req, res) => {
  *
  */
 const show = (req, res) => {
-  res.jsonp(response(true, { event: req.eventData.toJSON() }))
+  const eventId = req.eventData._id
+  parallel({
+    event: (cb) => {
+      cb(null, req.eventData.toJSON())
+    },
+    areas: (cb) => {
+      Area.all(eventId, list => cb(null, list))
+    },
+    plans: (cb) => {
+      Plan.all(eventId, list => cb(null, list))
+    }
+  }, (error, results) => {
+    res.jsonp(response(true, results))
+  })
 }
 
 /**

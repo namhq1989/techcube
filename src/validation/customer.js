@@ -47,6 +47,30 @@ const validateObject = {
       }
     }
   }),
+  eventId: Joi.string().regex(config.regex.objectId).required().options({
+    language: {
+      key: '{{!eventId}}',
+      any: {
+        required: `Event ID ${text.IS_REQUIRED}`,
+        empty: `Event ID ${text.IS_EMPTY}`
+      },
+      string: {
+        regex: `Event ID ${text.NOT_VALID}`
+      }
+    }
+  }),
+  planId: Joi.string().regex(config.regex.objectId).required().options({
+    language: {
+      key: '{{!planId}}',
+      any: {
+        required: `Plan ID ${text.IS_REQUIRED}`,
+        empty: `Plan ID ${text.IS_EMPTY}`
+      },
+      string: {
+        regex: `Plan ID ${text.NOT_VALID}`
+      }
+    }
+  }),
   page: Joi.number().integer().min(0).options({
     language: {
       key: '{{!page}}',
@@ -73,5 +97,10 @@ export default {
   // GET /customers
   all: {
     query: lodash.pick(validateObject, ['page'])
+  },
+
+  // POST /customers/upgradePlan
+  upgradePlan: {
+    body: lodash.pick(validateObject, ['email', 'phone', 'eventId', 'planId'])
   }
 }

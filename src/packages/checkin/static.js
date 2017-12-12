@@ -25,7 +25,7 @@ const allByEvent = (eventId, page = 0, sort = '-date', callback) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('customer', 'name').lean().exec((error, checkins) => {
+        .populate('customer', 'name').populate('area', 'name').populate('byStaff', 'name').lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }
@@ -62,7 +62,7 @@ const allByCustomer = (customerId, page = 0, sort = '-date', callback) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('event', 'name').lean().exec((error, checkins) => {
+        .populate('event', 'name').populate('area', 'name').populate('byStaff', 'name').lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }

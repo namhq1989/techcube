@@ -2,7 +2,7 @@ import lodash from 'lodash'
 import { response, getError } from '../../utils'
 import { Area } from '../../models'
 
-const RAW_FIELDS = ['name', 'eventId', 'startAt', 'endAt']
+const RAW_FIELDS = ['name', 'eventId', 'startAt', 'endAt', 'numOfCheckin']
 
 /**
  * Get list
@@ -15,6 +15,14 @@ const all = (req, res) => {
   Area.all(eventId, (data) => {
     res.jsonp(response(true, data))
   })
+}
+
+/**
+ * Show
+ *
+ */
+const show = (req, res) => {
+  res.jsonp(response(true, { area: req.areaData.toJSON() }))
 }
 
 /**
@@ -77,6 +85,7 @@ const changeStatus = (req, res) => {
 // Export
 export default {
   all,
+  show,
   create,
   update,
   changeStatus

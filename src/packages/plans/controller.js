@@ -1,19 +1,24 @@
+import { parallel } from 'async'
 import lodash from 'lodash'
 import { response, getError } from '../../utils'
-import { Plan } from '../../models'
+import { Plan, Area } from '../../models'
 
 const RAW_FIELDS = ['name', 'eventId', 'areas', 'fee']
 
 /**
- * Get list
+ * Show
  *
  */
-const all = (req, res) => {
-  // Fetch params
-  const { eventId } = req.params
-
-  Plan.all(eventId, (data) => {
-    res.jsonp(response(true, data))
+const show = (req, res) => {
+  parallel({
+    plan: (cb) => {
+      cb(null, req.planData.toJSON())
+    },
+    areas: (cb) => {
+      Area.all(req.planData.event, areas => cb(null, areas))
+    }
+  }, (error, results) => {
+    res.jsonp(response(true, results))
   })
 }
 
@@ -76,7 +81,7 @@ const changeStatus = (req, res) => {
 
 // Export
 export default {
-  all,
+  show,
   create,
   update,
   changeStatus

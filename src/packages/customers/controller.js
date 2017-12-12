@@ -1,7 +1,7 @@
-import { eachSeries } from 'async'
-import { response, getError } from '../../utils'
+import { eachSeries, series } from 'async'
+import { response, getError, format } from '../../utils'
 import locales from '../../locales'
-import { Customer, Checkin } from '../../models'
+import { Customer, Checkin, Event, Plan, CustomerAndEventStatus } from '../../models'
 
 /**
  * Get list customers
@@ -37,6 +37,59 @@ const create = (req, res) => {
       return res.jsonp(response(false, {}, getError.message(error)))
     }
     res.jsonp(response(true))
+  })
+}
+
+/**
+ * Upgrade plan
+ *
+ */
+const upgradePlan = (req, res) => {
+  // Fetch params
+  const { email, phone, eventId, planId } = req.body
+
+  const condition = {}
+  if (email) {
+    condition.email = email.split(' ').join('').toLowerCase()
+  } else if (phone) {
+    condition.phone = format.phone(phone)
+  }
+
+  let customer
+  series({
+    findCustomer: (cb) => {
+      Customer.findOne(condition).lean().exec((error, obj) => {
+        if (error || !customer) {
+          cb(true, locales.NotFound.Customer)
+        }
+
+        customer = obj
+        cb()
+      })
+    },
+    findEvent: (cb) => {
+      Event.findOne({
+        _id: eventId
+      }).lean().exec((error, obj) => {
+        cb(error || !obj, locales.NotFound.Event)
+      })
+    },
+    findPlan: (cb) => {
+      Plan.findOne({
+        _id: planId
+      }).lean().exec((error, obj) => {
+        cb(error || !obj, locales.NotFound.Plan)
+      })
+    },
+    upgrade: (cb) => {
+      CustomerAndEventStatus.newDoc(customer._id, eventId, planId, () => cb())
+    }
+  }, (error, results) => {
+    if (error) {
+      return res.jsonp(response(false, {}, getError.last(results)))
+    }
+
+    res.jsonp(response(true, {}, `Nâng cáp gói thành viên cho khách ${customer.name} thành công`))
   })
 }
 
@@ -132,6 +185,7 @@ export default {
   all,
   show,
   create,
+  upgradePlan,
   update,
   createByExcel,
   checkinHistories,

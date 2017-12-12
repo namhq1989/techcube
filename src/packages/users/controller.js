@@ -43,7 +43,9 @@ const me = (req, res) => {
  *
  */
 const show = (req, res) => {
-  res.jsonp(response(true, req.userData.toJSON()))
+  User.info(req.userData.toJSON(), (data) => {
+    res.jsonp(response(true, { user: data }))
+  })
 }
 
 /**
@@ -95,7 +97,7 @@ const changeStatus = (req, res) => {
   // Fetch params
   const user = req.userData
   user.active = !user.active
-  user.save((error) => {
+  user.save({ validateBeforeSave: false }, (error) => {
     if (error) {
       return res.jsonp(response(false, {}, getError.message(error)))
     }
