@@ -15,7 +15,7 @@ const router = express.Router()
  */
 
 /**
- * @api {get} /checkin Get customer checkin areas list
+ * @api {get} /checkin/:code Get customer checkin areas list
  *
  * @apiGroup Checkin
  * @apiName ListCheckinAreas
@@ -23,7 +23,7 @@ const router = express.Router()
  *
  * @apiParam {String}   code
  */
-router.get('/', middleware.requiresStaff, CheckinCtrl.getListArea)
+router.get('/:code', middleware.requiresStaff, CheckinCtrl.getListArea)
 
 /**
  * @api {post} /checkin Checkin

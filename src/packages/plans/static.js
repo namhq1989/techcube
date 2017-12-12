@@ -1,5 +1,5 @@
 import config from '../../config'
-import { Plan, CustomerAndEventStatus, Area } from '../../models'
+import { Plan, CustomerAndEventStatus } from '../../models'
 
 /**
  * Get all
@@ -47,14 +47,14 @@ const findLowestPlanAndCreateStatus = (customerId, eventId, callback) => {
  * @param {Function} callback
  */
 const getAreas = (planId, callback) => {
-  Area.find({
-    plan: planId
-  }).sort('startAt').select('name startAt endAt numOfCheckin').lean().exec((error, areas) => {
-    if (!areas) {
-      areas = config.conventions.array
+  Plan.findOne({
+    _id: planId
+  }).select('areas').populate('areas', 'name startAt endAt numOfCheckin').lean().exec((error, plan) => {
+    if (!plan || !plan.areas) {
+      callback(config.conventions.array)
+    } else {
+      callback(plan.areas)
     }
-
-    callback(areas)
   })
 }
 

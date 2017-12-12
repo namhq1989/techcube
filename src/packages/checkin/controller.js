@@ -1,8 +1,8 @@
 import { series, parallel, eachSeries } from 'async'
+import lodash from 'lodash'
 import config from '../../config'
 import { response, helper, getError } from '../../utils'
 import locales from '../../locales'
-import { ObjectId } from '../../utils/mongoose'
 import { Customer, Checkin, Event, CustomerAndEventStatus, Plan, Area } from '../../models'
 
 /**
@@ -11,7 +11,7 @@ import { Customer, Checkin, Event, CustomerAndEventStatus, Plan, Area } from '..
  */
 const getListArea = (req, res) => {
   // Fetch params
-  const { code } = req.query
+  const { code } = req.params
   let customer = null
   let event = null
   let plan = null
@@ -81,9 +81,9 @@ const getListArea = (req, res) => {
     res.jsonp(response(true, {
       areas,
       currentArea,
-      plan,
-      customer,
-      event
+      plan: lodash.pick(plan, ['_id', 'name']),
+      customer: lodash.pick(customer, ['_id', 'name']),
+      event: lodash.pick(event, ['_id', 'name'])
     }))
   })
 }
@@ -149,10 +149,11 @@ const checkin = (req, res) => {
           return cb(true, locales.NotFound.Area)
         }
         area = obj
-        cb(!plan.areas.includes(areaId), locales.CannotCheckinArea)
+
+        cb(helper.indexFromObjectIds(plan.areas, area._id) === -1, locales.CannotCheckinArea)
       })
     },
-    canCheckin: (cb) => {
+    canContinueCheckin: (cb) => {
       Checkin.count({
         customer: customer._id,
         event: event._id,
@@ -179,32 +180,21 @@ const checkin = (req, res) => {
       doc.save(() => {
         cb()
       })
-    },
-    histories: (cb) => {
-      Checkin.allByCustomer(customer._id, 0, '-date', (data) => {
-        cb(null, data.checkin)
-      })
     }
   }, (error, results) => {
-    if (!customer) {
-      customer = {
-        _id: new ObjectId(),
-        name: 'N/A'
+    Checkin.allByCustomer(customer._id, 0, '-date', (histories) => {
+      if (error) {
+        res.jsonp(response(false, {
+          customer: lodash.pick(customer, ['_id', 'name']),
+          histories: histories.checkin
+        }, getError.last(results)))
+      } else {
+        res.jsonp(response(true, {
+          customer: lodash.pick(customer, ['_id', 'name']),
+          histories: histories.checkin
+        }, locales.CheckinSuccess))
       }
-    }
-
-    if (error || !customer || !event) {
-      const message = !customer ? locales.NotFound.User : locales.Validation.Event.NoActiveEvent
-      res.jsonp(response(false, {
-        customer,
-        histories: results.histories || config.conventions.array
-      }, message))
-    } else {
-      res.jsonp(response(true, {
-        customer,
-        histories: results.histories
-      }, locales.CheckinSuccess))
-    }
+    })
   })
 }
 

@@ -103,6 +103,9 @@ const getDeviceInfo = (ua) => {
  * @return {Boolean}
  */
 const isInTimeRange = (givenTime, beginTime, endTime) => {
+  givenTime = new Date(givenTime)
+  beginTime = new Date(beginTime)
+  endTime = new Date(endTime)
   let isIn = false
   givenTime = givenTime.getTime()
 
@@ -126,11 +129,36 @@ const isInTimeRange = (givenTime, beginTime, endTime) => {
   return isIn
 }
 
+/**
+ * Get index of string from array of object ids
+ *
+ * @param  {Array}  array
+ * @param  {String} id
+ * @return {Number}
+ */
+const indexFromObjectIds = (array, id) => {
+  let index = -1
+
+  if (!array || !Array.isArray(array)) {
+    return index
+  }
+
+  id = id.toString()
+  for (const i in array) {
+    if (array[i] && array[i].toString() === id) {
+      index = i
+      break
+    }
+  }
+  return index
+}
+
 // Export
 export default {
   token,
   customerQRCode,
   getFileType,
   getDeviceInfo,
-  isInTimeRange
+  isInTimeRange,
+  indexFromObjectIds
 }
