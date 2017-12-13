@@ -219,7 +219,9 @@ const recent = (req, res) => {
     },
     checkin: (cb) => {
       Checkin.find(condition).sort(sort).skip(page * limit).limit(limit)
-        .populate('event', 'name').populate('customer', 'name company').lean().exec((error, checkins) => {
+        .populate('event', 'name').populate('customer', 'name company')
+        .populate('area', 'name').populate('byStaff', 'name')
+        .lean().exec((error, checkins) => {
           if (!checkins) {
             checkins = config.conventions.array
           }

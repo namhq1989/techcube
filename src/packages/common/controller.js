@@ -1,8 +1,8 @@
-import { series, parallel } from 'async'
+import { series, parallel, mapSeries } from 'async'
+import moment from 'moment'
 import locales from '../../locales'
 import { response, getError, env, helper } from '../../utils'
-import { ObjectId } from '../../utils/mongoose'
-import { User, Customer, Event } from '../../models'
+import { User, Customer, Event, Plan } from '../../models'
 
 /**
  * Login with email
@@ -69,39 +69,30 @@ const login = (req, res) => {
 const data = (req, res) => {
   parallel({
     events: (cb) => {
-      cb(null, [{
-        _id: new ObjectId(),
-        name: 'Sample event 1',
-        plans: [{
-          _id: new ObjectId(),
-          name: 'Plan 1',
-          fee: 0
-        }, {
-          _id: new ObjectId(),
-          name: 'Plan 2',
-          fee: 20000
-        }, {
-          _id: new ObjectId(),
-          name: 'Plan 3',
-          fee: 500000
-        }]
-      }, {
-        _id: new ObjectId(),
-        name: 'Sample event 2',
-        plans: [{
-          _id: new ObjectId(),
-          name: 'Plan 1',
-          fee: 0
-        }, {
-          _id: new ObjectId(),
-          name: 'Plan 2',
-          fee: 10000
-        }, {
-          _id: new ObjectId(),
-          name: 'Plan 3',
-          fee: 100000
-        }]
-      }])
+      Event.find({
+        createdAt: {
+          $gte: new Date(moment().subtract(30, 'd').toISOString())
+        }
+      }).sort('-createdAt').select('name').lean().exec((error, events) => {
+        if (error || !events || !events.length) {
+          return cb(null, [])
+        }
+
+        mapSeries(events, (event, cb1) => {
+          Plan.find({
+            event: event._id,
+            active: true
+          }).sort('fee').select('name fee').lean().exec((error, plans) => {
+            if (!plans) {
+              plans = []
+            }
+            event.plans = plans
+            cb1(null, event)
+          })
+        }, (error, arr) => {
+          cb(null, arr)
+        })
+      })
     }
   }, (error, results) => {
     res.jsonp(response(true, results))

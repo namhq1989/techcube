@@ -29,9 +29,9 @@ export default function (app) {
     publicIp.v4().then((v4ip) => {
       const table = new CliTable({
         head: ['#', 'Local IP', 'Public IP', 'Num of CPUs', 'Environment'],
-        colWidths: [5, 20, 20, 20, process.env.NODE_ENV.toUpperCase()]
+        colWidths: [5, 20, 20, 20, 20]
       })
-      table.push(['', ipTool.address(), v4ip, NUMCPUS])
+      table.push(['', ipTool.address(), v4ip, NUMCPUS, process.env.NODE_ENV.toUpperCase()])
       console.log(table.toString())
     })
     debug(`Server started on port ${port}`)
@@ -93,9 +93,9 @@ export default function (app) {
       publicIp.v4().then((v4ip) => {
         const table = new CliTable({
           head: ['#', 'Local IP', 'Public IP', 'Num of CPUs', 'Worker id', 'Port', 'Environment'],
-          colWidths: [5, 20, 20, 20, 20, 20, process.env.NODE_ENV.toUpperCase()]
+          colWidths: [5, 20, 20, 20, 20, 20, 20]
         })
-        table.push(['', ipTool.address(), v4ip, NUMCPUS, process.pid, server.address().port])
+        table.push(['', ipTool.address(), v4ip, NUMCPUS, process.pid, server.address().port], process.env.NODE_ENV.toUpperCase())
         console.log(table.toString())
       })
       // debug(`Worker is working with process id ${process.pid}`)

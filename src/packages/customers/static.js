@@ -55,7 +55,7 @@ const all = (page = 0, keyword = '', sort = '-createdAt', callback) => {
  * @param {Function}  callback
  */
 const info = (data, callback) => {
-  callback(lodash.pick(data, ['_id', 'name', 'phone', 'email', 'company', 'createdAt', 'note', 'statistic']))
+  callback(lodash.pick(data, ['_id', 'name', 'phone', 'email', 'company', 'createdAt', 'note', 'statistic', 'qrCode']))
 }
 
 /**
