@@ -60,7 +60,7 @@ const upgradePlan = (req, res) => {
     findCustomer: (cb) => {
       Customer.findOne(condition).lean().exec((error, obj) => {
         if (error || !customer) {
-          cb(true, locales.NotFound.Customer)
+          return cb(true, locales.NotFound.Customer)
         }
 
         customer = obj
