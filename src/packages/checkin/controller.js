@@ -182,6 +182,13 @@ const checkin = (req, res) => {
       })
     }
   }, (error, results) => {
+    if (!customer) {
+      return res.jsonp(response(false, {
+        customer: null,
+        histories: []
+      }, locales.NotFound.Customer))
+    }
+
     Checkin.allByCustomer(customer._id, 0, '-date', (histories) => {
       if (error) {
         res.jsonp(response(false, {
